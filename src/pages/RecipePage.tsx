@@ -41,6 +41,14 @@ const sampleRecipe = {
     name: "Chef Michael",
     image: "https://images.unsplash.com/photo-1566554273541-37a9ca77b91f?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
   },
+  nutritionalInfo: {
+    calories: 450,
+    protein: 35,
+    carbs: 3,
+    fat: 32,
+    fiber: 1,
+    sugar: 0
+  }
 };
 
 const RecipePage = () => {
