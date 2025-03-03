@@ -1,166 +1,164 @@
 
 import { useState, useRef, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Input } from "@/components/ui/input";
-import { ChefHat, ArrowUp, Loader2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import ChatMessage from "./ChatMessage";
+import ChatMessage from "@/components/ChatMessage";
 
-// Define message types
 interface Message {
   id: string;
   role: "user" | "assistant";
   content: string;
 }
 
-const INITIAL_MESSAGES: Message[] = [
-  {
-    id: "welcome",
-    role: "assistant",
-    content: "Hi! I'm your recipe assistant. Tell me what ingredients you have, and I'll suggest some delicious recipes you can make.",
-  },
-];
+interface RecipeChatProps {
+  cuisineType?: string;
+  dietType?: string;
+}
 
-const generateMockRecipe = (ingredients: string): string => {
-  // This is a mock function that would be replaced with actual AI integration
-  const ingredientList = ingredients.split(",").map(i => i.trim());
-  
-  const recipeTitle = `${ingredientList[0].charAt(0).toUpperCase() + ingredientList[0].slice(1)} ${
-    ingredientList.length > 1 ? `and ${ingredientList[1]}` : ""
-  } Special`;
-  
-  return `
-# ${recipeTitle}
-
-## Ingredients
-${ingredientList.map(ingredient => `- ${ingredient}`).join('\n')}
-${ingredientList.length < 3 ? "- salt and pepper to taste\n- olive oil\n- garlic (optional)" : ""}
-
-## Instructions
-1. Prepare all ingredients by washing and chopping as needed.
-2. Heat olive oil in a pan over medium heat.
-${ingredientList.includes("chicken") || ingredientList.includes("meat") ? 
-  "3. Season the meat with salt and pepper, then cook until golden brown.\n4. Remove and set aside." : 
-  "3. Sauté any vegetables until tender."}
-${ingredientList.includes("pasta") || ingredientList.includes("rice") ? 
-  "4. Cook the pasta/rice according to package instructions.\n5. Drain and combine with the other ingredients." : 
-  "4. Combine all ingredients and cook for another 5 minutes."}
-6. Serve hot and enjoy your meal!
-
-## Cooking Time
-Approximately 25 minutes
-
-## Servings
-2-3 people
-  `;
+const INITIAL_MESSAGE: Message = {
+  id: uuidv4(),
+  role: "assistant",
+  content: "Hi there! Tell me what ingredients you have, and I'll suggest personalized recipes for you. You can also specify if you're looking for a particular cuisine type or dietary preference.",
 };
 
-const RecipeChat = () => {
-  const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
-  const [input, setInput] = useState("");
+const RecipeChat = ({ cuisineType = "all", dietType = "all" }: RecipeChatProps) => {
+  const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
+  const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { toast } = useToast();
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
+  // Scroll to bottom of chat when messages change
   useEffect(() => {
-    scrollToBottom();
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Auto resize textarea as content grows
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    textarea.style.height = "auto";
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 150)}px`;
+  }, [inputValue]);
+
+  // Mock function to generate recipe based on ingredients
+  const generateRecipe = async (ingredients: string, cuisine: string, diet: string) => {
+    setIsLoading(true);
+    
+    // In a real implementation, this would make an API call to an AI service
+    // Simulating network latency
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    let cuisineInfo = cuisine !== "all" ? `for ${cuisine} cuisine` : "";
+    let dietInfo = diet !== "all" ? `that is ${diet}` : "";
+    
+    const response = `Based on your ingredients (${ingredients}), ${cuisineInfo} ${dietInfo}, here's a recipe suggestion:
+
+## ${cuisine !== "all" ? cuisine.charAt(0).toUpperCase() + cuisine.slice(1) : "Custom"} ${diet === "vegetarian" ? "Vegetarian" : diet === "non-vegetarian" ? "Non-Vegetarian" : ""} Dish
+
+### Ingredients:
+- ${ingredients}
+- Salt and pepper to taste
+- 2 tablespoons olive oil
+${diet !== "vegetarian" ? "- 200g chicken or beef\n" : ""}
+- 1 onion, diced
+- 2 cloves garlic, minced
+- Fresh herbs
+
+### Instructions:
+1. Heat olive oil in a pan over medium heat.
+${diet !== "vegetarian" ? "2. Cook the meat until browned, about 5-7 minutes.\n" : ""}
+2. Add onions and garlic, sauté until translucent.
+3. Add your main ingredients and stir well.
+4. Season with salt, pepper, and herbs.
+5. Simmer for 15-20 minutes until everything is cooked through.
+6. Serve hot and enjoy!
+
+Would you like me to suggest alternative recipes or make any modifications to this one?`;
+    
+    setIsLoading(false);
+    return response;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!input.trim()) return;
-    
+    if (!inputValue.trim() || isLoading) return;
+
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: uuidv4(),
       role: "user",
-      content: input,
+      content: inputValue,
     };
-    
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
-    setIsLoading(true);
-    
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputValue("");
+
     try {
-      // In a real implementation, this would be an API call to an AI service
-      setTimeout(() => {
-        const recipe = generateMockRecipe(input);
-        
-        const assistantMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          role: "assistant",
-          content: recipe,
-        };
-        
-        setMessages((prev) => [...prev, assistantMessage]);
-        setIsLoading(false);
-      }, 1500); // Simulate API delay
+      const response = await generateRecipe(inputValue, cuisineType, dietType);
+      
+      const assistantMessage: Message = {
+        id: uuidv4(),
+        role: "assistant",
+        content: response,
+      };
+
+      setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to generate recipe. Please try again.",
-        variant: "destructive",
-      });
-      setIsLoading(false);
+      console.error("Error generating recipe:", error);
+      
+      const errorMessage: Message = {
+        id: uuidv4(),
+        role: "assistant",
+        content: "Sorry, I couldn't generate a recipe at this time. Please try again later.",
+      };
+
+      setMessages(prev => [...prev, errorMessage]);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
     }
   };
 
   return (
-    <div className="flex flex-col h-[70vh] md:h-[600px] bg-secondary/30 rounded-xl overflow-hidden border">
+    <div className="rounded-xl border bg-card shadow-sm h-[600px] flex flex-col">
       <ScrollArea className="flex-1 p-4">
-        <div className="space-y-4 pb-4">
+        <div className="space-y-4 mb-4">
           {messages.map((message) => (
-            <ChatMessage 
-              key={message.id} 
-              message={message} 
-            />
+            <ChatMessage key={message.id} message={message} />
           ))}
-          {isLoading && (
-            <div className="flex items-center space-x-2 animate-pulse">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                <Loader2 className="h-4 w-4 animate-spin text-primary" />
-              </div>
-              <div>Generating recipe...</div>
-            </div>
-          )}
           <div ref={messagesEndRef} />
         </div>
       </ScrollArea>
-      
+
       <form 
         onSubmit={handleSubmit} 
-        className="p-4 border-t bg-card/50 backdrop-blur-sm"
+        className="border-t p-4 flex gap-2 items-end"
       >
-        <div className="relative flex items-center">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="List your ingredients (e.g., chicken, rice, bell peppers)..."
-            className="pr-24 py-6 bg-background"
-            disabled={isLoading}
-          />
-          <Button 
-            type="submit" 
-            size="icon" 
-            className="absolute right-1 h-10 w-10 rounded-full"
-            disabled={isLoading || !input.trim()}
-          >
-            {isLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <ArrowUp className="h-4 w-4" />
-            )}
-          </Button>
-        </div>
-        <div className="text-xs text-muted-foreground mt-2 flex items-center gap-1 justify-center">
-          <ChefHat className="h-3 w-3" />
-          <span>Powered by suvAI Recipe Assistant</span>
-        </div>
+        <Textarea
+          ref={textareaRef}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="List your ingredients here..."
+          className="min-h-10 resize-none"
+          disabled={isLoading}
+        />
+        <Button 
+          type="submit" 
+          size="icon" 
+          className="flex-shrink-0"
+          disabled={isLoading || !inputValue.trim()}
+        >
+          <Send className="h-4 w-4" />
+        </Button>
       </form>
     </div>
   );

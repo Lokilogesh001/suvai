@@ -3,8 +3,32 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import RecipeChat from "@/components/RecipeChat";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const cuisines = [
+  { name: "All Cuisines", value: "all" },
+  { name: "Italian", value: "italian" },
+  { name: "Indian", value: "indian" },
+  { name: "Chinese", value: "chinese" },
+  { name: "Mexican", value: "mexican" },
+  { name: "Thai", value: "thai" },
+  { name: "Mediterranean", value: "mediterranean" },
+  { name: "Japanese", value: "japanese" },
+  { name: "French", value: "french" },
+  { name: "American", value: "american" },
+];
 
 const ChatbotPage = () => {
+  const [selectedCuisine, setSelectedCuisine] = useState("all");
+  const [dietType, setDietType] = useState("all");
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -18,7 +42,55 @@ const ChatbotPage = () => {
           <Separator className="my-6" />
         </div>
         
-        <RecipeChat />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Cuisine Type</label>
+            <Select 
+              value={selectedCuisine} 
+              onValueChange={setSelectedCuisine}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select cuisine type" />
+              </SelectTrigger>
+              <SelectContent>
+                {cuisines.map((cuisine) => (
+                  <SelectItem key={cuisine.value} value={cuisine.value}>
+                    {cuisine.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Diet Preference</label>
+            <div className="flex gap-2">
+              <Button 
+                variant={dietType === "all" ? "default" : "outline"} 
+                onClick={() => setDietType("all")}
+                className="flex-1"
+              >
+                All
+              </Button>
+              <Button 
+                variant={dietType === "vegetarian" ? "default" : "outline"} 
+                onClick={() => setDietType("vegetarian")}
+                className="flex-1"
+              >
+                Vegetarian
+              </Button>
+              <Button 
+                variant={dietType === "non-vegetarian" ? "default" : "outline"} 
+                onClick={() => setDietType("non-vegetarian")}
+                className="flex-1"
+              >
+                Non-Vegetarian
+              </Button>
+            </div>
+          </div>
+        </div>
+        
+        <RecipeChat cuisineType={selectedCuisine} dietType={dietType} />
       </div>
     </div>
   );
