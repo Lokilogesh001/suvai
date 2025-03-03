@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Search, Menu, X, ChefHat } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SearchBar from "./SearchBar";
@@ -8,6 +8,7 @@ import SearchBar from "./SearchBar";
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +19,10 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const isActive = (path: string) => {
+    return location.pathname === path ? "text-primary font-semibold" : "text-foreground/80 hover:text-foreground";
+  };
 
   return (
     <header
@@ -41,27 +46,27 @@ const Navbar = () => {
             <nav className="flex space-x-6">
               <Link
                 to="/"
-                className="text-foreground/80 hover:text-foreground transition-default font-medium"
+                className={`${isActive("/")} transition-default font-medium`}
               >
                 Home
               </Link>
               <Link
                 to="/recipes"
-                className="text-foreground/80 hover:text-foreground transition-default font-medium"
+                className={`${isActive("/recipes")} transition-default font-medium`}
               >
                 Recipes
               </Link>
               <Link
-                to="/meal-planner"
-                className="text-foreground/80 hover:text-foreground transition-default font-medium"
+                to="/chatbot"
+                className={`${isActive("/chatbot")} transition-default font-medium`}
               >
-                Meal Planner
+                Recipe Assistant
               </Link>
               <Link
-                to="/community"
-                className="text-foreground/80 hover:text-foreground transition-default font-medium"
+                to="/meal-planner"
+                className={`${isActive("/meal-planner")} transition-default font-medium`}
               >
-                Community
+                Meal Planner
               </Link>
             </nav>
 
@@ -97,31 +102,31 @@ const Navbar = () => {
             <nav className="flex flex-col space-y-3">
               <Link
                 to="/"
-                className="text-foreground/80 hover:text-foreground py-2 transition-default font-medium"
+                className={`${isActive("/")} py-2 transition-default font-medium`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Home
               </Link>
               <Link
                 to="/recipes"
-                className="text-foreground/80 hover:text-foreground py-2 transition-default font-medium"
+                className={`${isActive("/recipes")} py-2 transition-default font-medium`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Recipes
               </Link>
               <Link
+                to="/chatbot"
+                className={`${isActive("/chatbot")} py-2 transition-default font-medium`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Recipe Assistant
+              </Link>
+              <Link
                 to="/meal-planner"
-                className="text-foreground/80 hover:text-foreground py-2 transition-default font-medium"
+                className={`${isActive("/meal-planner")} py-2 transition-default font-medium`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Meal Planner
-              </Link>
-              <Link
-                to="/community"
-                className="text-foreground/80 hover:text-foreground py-2 transition-default font-medium"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Community
               </Link>
             </nav>
             <Button className="w-full" size="sm">
