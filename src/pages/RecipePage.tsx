@@ -2,6 +2,7 @@
 import { useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import RecipeDetail from "@/components/RecipeDetail";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Sample recipes data
 const sampleRecipes = {
@@ -252,6 +253,7 @@ const sampleRecipes = {
 
 const RecipePage = () => {
   const { id } = useParams();
+  const { t } = useLanguage();
   
   // In a real app, you'd fetch the recipe data based on the ID
   console.log("Recipe ID:", id);

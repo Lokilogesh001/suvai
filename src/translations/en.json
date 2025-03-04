@@ -58,5 +58,18 @@
   "profile.language": "Language",
   "profile.logout": "Log Out",
   "profile.empty.saved": "No saved recipes yet",
-  "profile.empty.grocery": "Your grocery list is empty"
+  "profile.empty.grocery": "Your grocery list is empty",
+  
+  "recipe.ingredients": "Ingredients",
+  "recipe.instructions": "Instructions",
+  "recipe.nutritional": "Nutritional Information",
+  "recipe.prep": "Prep Time",
+  "recipe.cook": "Cook Time",
+  "recipe.servings": "Servings",
+  "recipe.calories": "Calories",
+  "recipe.difficulty": "Difficulty",
+  
+  "notfound.title": "404",
+  "notfound.subtitle": "Oops! Page not found",
+  "notfound.action": "Go back home"
 }

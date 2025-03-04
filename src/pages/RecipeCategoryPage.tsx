@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Tag, Grid2X2, List, ChefHat } from "lucide-react";
@@ -13,8 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-// Sample recipe data - in a real app, this would come from an API
 const RECIPE_DATA = [
   {
     id: "1",
@@ -194,23 +193,24 @@ const RECIPE_DATA = [
   }
 ];
 
-const cuisines = [
-  { name: "All Cuisines", value: "all" },
-  { name: "Italian", value: "italian" },
-  { name: "Indian", value: "indian" },
-  { name: "Chinese", value: "chinese" },
-  { name: "Mexican", value: "mexican" },
-  { name: "Thai", value: "thai" },
-  { name: "Mediterranean", value: "mediterranean" },
-  { name: "Japanese", value: "japanese" },
-  { name: "French", value: "french" },
-  { name: "American", value: "american" },
-];
-
 const RecipeCategoryPage = () => {
+  const { t } = useLanguage();
   const [selectedCuisine, setSelectedCuisine] = useState("all");
   const [dietType, setDietType] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
+  const cuisines = [
+    { name: t("assistant.all"), value: "all" },
+    { name: "Italian", value: "italian" },
+    { name: "Indian", value: "indian" },
+    { name: "Chinese", value: "chinese" },
+    { name: "Mexican", value: "mexican" },
+    { name: "Thai", value: "thai" },
+    { name: "Mediterranean", value: "mediterranean" },
+    { name: "Japanese", value: "japanese" },
+    { name: "French", value: "french" },
+    { name: "American", value: "american" },
+  ];
 
   const filteredRecipes = RECIPE_DATA.filter((recipe) => {
     const cuisineMatch = selectedCuisine === "all" || recipe.cuisine === selectedCuisine;
@@ -227,10 +227,10 @@ const RecipeCategoryPage = () => {
           <div>
             <h1 className="text-3xl md:text-4xl font-bold mb-2 flex items-center gap-2">
               <ChefHat className="h-8 w-8" />
-              Recipe Categories
+              {t("nav.recipes")}
             </h1>
             <p className="text-muted-foreground">
-              Browse recipes by cuisine type and dietary preference
+              {t("recipes.subtitle")}
             </p>
           </div>
           
@@ -260,14 +260,14 @@ const RecipeCategoryPage = () => {
           <div className="space-y-2">
             <label className="text-sm font-medium flex items-center gap-2">
               <Tag className="h-4 w-4" />
-              Cuisine Type
+              {t("assistant.cuisine")}
             </label>
             <Select 
               value={selectedCuisine} 
               onValueChange={setSelectedCuisine}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select cuisine type" />
+                <SelectValue placeholder={t("assistant.cuisine")} />
               </SelectTrigger>
               <SelectContent>
                 {cuisines.map((cuisine) => (
@@ -280,28 +280,28 @@ const RecipeCategoryPage = () => {
           </div>
           
           <div className="space-y-2">
-            <label className="text-sm font-medium">Diet Preference</label>
+            <label className="text-sm font-medium">{t("assistant.diet")}</label>
             <div className="flex gap-2">
               <Button 
                 variant={dietType === "all" ? "default" : "outline"} 
                 onClick={() => setDietType("all")}
                 className="flex-1"
               >
-                All
+                {t("assistant.all")}
               </Button>
               <Button 
                 variant={dietType === "vegetarian" ? "default" : "outline"} 
                 onClick={() => setDietType("vegetarian")}
                 className="flex-1"
               >
-                Vegetarian
+                {t("assistant.vegetarian")}
               </Button>
               <Button 
                 variant={dietType === "non-vegetarian" ? "default" : "outline"} 
                 onClick={() => setDietType("non-vegetarian")}
                 className="flex-1"
               >
-                Non-Vegetarian
+                {t("assistant.nonvegetarian")}
               </Button>
             </div>
           </div>

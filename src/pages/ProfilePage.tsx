@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Sample data for saved recipes
 const SAVED_RECIPES = [
@@ -52,6 +53,7 @@ const INITIAL_GROCERY_ITEMS: GroceryItem[] = [
 ];
 
 const ProfilePage = () => {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("saved");
   const [groceryItems, setGroceryItems] = useState<GroceryItem[]>(INITIAL_GROCERY_ITEMS);
   const [newItemName, setNewItemName] = useState("");
@@ -121,7 +123,7 @@ const ProfilePage = () => {
               </div>
               
               <div className="bg-muted/30 rounded-lg p-4">
-                <h3 className="font-medium mb-3">Account</h3>
+                <h3 className="font-medium mb-3">{t("profile.title")}</h3>
                 <nav className="space-y-1">
                   <Button 
                     variant="ghost"
@@ -130,7 +132,7 @@ const ProfilePage = () => {
                     onClick={() => setActiveTab("saved")}
                   >
                     <Heart className="mr-2 h-4 w-4" />
-                    Saved Recipes
+                    {t("profile.saved")}
                   </Button>
                   <Button 
                     variant="ghost"
@@ -139,7 +141,7 @@ const ProfilePage = () => {
                     onClick={() => setActiveTab("grocery")}
                   >
                     <ShoppingCart className="mr-2 h-4 w-4" />
-                    Grocery List
+                    {t("profile.grocery")}
                   </Button>
                   <Button 
                     variant="ghost"
@@ -147,7 +149,7 @@ const ProfilePage = () => {
                     className="w-full justify-start"
                   >
                     <ClipboardList className="mr-2 h-4 w-4" />
-                    My Meal Plans
+                    {t("nav.meal-planner")}
                   </Button>
                 </nav>
               </div>
@@ -160,17 +162,17 @@ const ProfilePage = () => {
               <TabsList className="w-full grid grid-cols-2 mb-6">
                 <TabsTrigger value="saved" className="flex gap-2 items-center">
                   <Heart className="h-4 w-4" />
-                  Saved Recipes
+                  {t("profile.saved")}
                 </TabsTrigger>
                 <TabsTrigger value="grocery" className="flex gap-2 items-center">
                   <ShoppingCart className="h-4 w-4" />
-                  Grocery List
+                  {t("profile.grocery")}
                 </TabsTrigger>
               </TabsList>
               
               <TabsContent value="saved" className="animate-fade-in">
                 <div className="bg-card rounded-lg shadow-sm p-6">
-                  <h2 className="text-2xl font-semibold mb-6">Your Saved Recipes</h2>
+                  <h2 className="text-2xl font-semibold mb-6">{t("profile.saved")}</h2>
                   
                   {SAVED_RECIPES.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -202,12 +204,12 @@ const ProfilePage = () => {
                   ) : (
                     <div className="text-center py-12 bg-muted/30 rounded-lg">
                       <Heart className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
-                      <h3 className="text-xl font-medium mb-2">No saved recipes yet</h3>
+                      <h3 className="text-xl font-medium mb-2">{t("profile.empty.saved")}</h3>
                       <p className="text-muted-foreground mb-4">
                         Start exploring and saving recipes you love
                       </p>
                       <Button asChild>
-                        <Link to="/recipes">Browse Recipes</Link>
+                        <Link to="/recipes">{t("nav.recipes")}</Link>
                       </Button>
                     </div>
                   )}
@@ -217,7 +219,7 @@ const ProfilePage = () => {
               <TabsContent value="grocery" className="animate-fade-in">
                 <div className="bg-card rounded-lg shadow-sm p-6">
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-semibold">Your Grocery List</h2>
+                    <h2 className="text-2xl font-semibold">{t("profile.grocery")}</h2>
                     <div className="flex gap-2">
                       <Button
                         variant="outline"
@@ -325,7 +327,7 @@ const ProfilePage = () => {
                   ) : (
                     <div className="text-center py-12 bg-muted/30 rounded-lg">
                       <ShoppingCart className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
-                      <h3 className="text-xl font-medium mb-2">Your grocery list is empty</h3>
+                      <h3 className="text-xl font-medium mb-2">{t("profile.empty.grocery")}</h3>
                       <p className="text-muted-foreground mb-4">
                         Add items to your grocery list
                       </p>

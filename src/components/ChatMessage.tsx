@@ -1,6 +1,7 @@
 
 import { ChefHat, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Message {
   id: string;
@@ -13,6 +14,7 @@ interface ChatMessageProps {
 }
 
 const ChatMessage = ({ message }: ChatMessageProps) => {
+  const { t } = useLanguage();
   const isUser = message.role === "user";
   
   return (

@@ -58,5 +58,18 @@
   "profile.language": "भाषा",
   "profile.logout": "लॉग आउट",
   "profile.empty.saved": "अभी तक कोई सेव किए गए व्यंजन नहीं",
-  "profile.empty.grocery": "आपकी किराने की सूची खाली है"
+  "profile.empty.grocery": "आपकी किराने की सूची खाली है",
+  
+  "recipe.ingredients": "सामग्री",
+  "recipe.instructions": "निर्देश",
+  "recipe.nutritional": "पोषण संबंधी जानकारी",
+  "recipe.prep": "तैयारी का समय",
+  "recipe.cook": "पकाने का समय",
+  "recipe.servings": "परोसे जाने की मात्रा",
+  "recipe.calories": "कैलोरी",
+  "recipe.difficulty": "कठिनाई",
+  
+  "notfound.title": "404",
+  "notfound.subtitle": "उफ़! पेज नहीं मिला",
+  "notfound.action": "होम पेज पर वापस जाएं"
 }
