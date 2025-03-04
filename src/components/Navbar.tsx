@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, Menu, X, ChefHat } from "lucide-react";
+import { Search, Menu, X, ChefHat, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SearchBar from "./SearchBar";
 
@@ -74,6 +74,16 @@ const Navbar = () => {
               <div className="relative">
                 <SearchBar />
               </div>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="rounded-full"
+                asChild
+              >
+                <Link to="/profile">
+                  <User className="h-5 w-5" />
+                </Link>
+              </Button>
               <Button variant="default" size="sm" className="font-medium">
                 Sign In
               </Button>
@@ -127,6 +137,13 @@ const Navbar = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Meal Planner
+              </Link>
+              <Link
+                to="/profile"
+                className={`${isActive("/profile")} py-2 transition-default font-medium`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                My Profile
               </Link>
             </nav>
             <Button className="w-full" size="sm">

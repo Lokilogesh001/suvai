@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import RecipePage from "./pages/RecipePage";
 import ChatbotPage from "./pages/ChatbotPage";
 import RecipeCategoryPage from "./pages/RecipeCategoryPage";
+import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/recipe/:id" element={<RecipePage />} />
           <Route path="/chatbot" element={<ChatbotPage />} />
           <Route path="/recipes" element={<RecipeCategoryPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
