@@ -1,26 +1,30 @@
+
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import FeaturedRecipes from "@/components/FeaturedRecipes";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Sparkles, Globe, BookOpen, Utensils, Users, ChefHat } from "lucide-react";
+import { ChevronDown, Sparkles, ChefHat } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-
-const categories = [
-  "All Recipes",
-  "Breakfast",
-  "Lunch",
-  "Dinner",
-  "Desserts",
-  "Vegetarian",
-  "Vegan",
-  "Gluten-Free",
-  "Keto",
-  "Quick Meals",
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
-  const [activeCategory, setActiveCategory] = useState("All Recipes");
+  const { t } = useLanguage();
+  
+  const categories = [
+    { id: "all", name: t("recipes.category.all") },
+    { id: "breakfast", name: t("recipes.category.breakfast") },
+    { id: "lunch", name: t("recipes.category.lunch") },
+    { id: "dinner", name: t("recipes.category.dinner") },
+    { id: "desserts", name: t("recipes.category.desserts") },
+    { id: "vegetarian", name: t("recipes.category.vegetarian") },
+    { id: "vegan", name: t("recipes.category.vegan") },
+    { id: "gluten-free", name: t("recipes.category.glutenfree") },
+    { id: "keto", name: t("recipes.category.keto") },
+    { id: "quick", name: t("recipes.category.quick") },
+  ];
+
+  const [activeCategory, setActiveCategory] = useState(categories[0].id);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
 
   useEffect(() => {
@@ -66,21 +70,27 @@ const Index = () => {
             variant="outline" 
             className="mb-4 py-1.5 px-6 bg-white/10 backdrop-blur text-white border-white/20 text-sm font-medium mx-auto"
           >
-            AI-Powered Cooking Assistant
+            {t("hero.badge")}
           </Badge>
           
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            Your Personal <span className="text-gradient bg-gradient-to-r from-blue-400 to-violet-400">AI Chef</span> for Exceptional Meals
+            {t("hero.title").split("AI").map((part, i, arr) => 
+              i < arr.length - 1 ? (
+                <span key={i}>
+                  {part}<span className="text-gradient bg-gradient-to-r from-blue-400 to-violet-400">AI</span>
+                </span>
+              ) : part
+            )}
           </h1>
           
           <p className="text-lg text-white/90 mb-6 max-w-2xl mx-auto">
-            Discover perfectly tailored recipes with AI-powered cooking assistance
+            {t("hero.subtitle")}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="rounded-full font-medium">
               <Sparkles className="mr-2 h-5 w-5" />
-              Get Started
+              {t("hero.button.start")}
             </Button>
             <Button 
               variant="outline" 
@@ -88,7 +98,7 @@ const Index = () => {
               className="rounded-full bg-white/10 text-white border-white/20 backdrop-blur hover:bg-white/20 font-medium"
               onClick={scrollToRecipes}
             >
-              View Recipes
+              {t("hero.button.recipes")}
               <ChevronDown className="ml-2 h-5 w-5" />
             </Button>
           </div>
@@ -101,16 +111,16 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 animate-fade-in">
             <div>
               <Badge className="mb-2" variant="outline">
-                Famous Recipes
+                {t("recipes.badge")}
               </Badge>
-              <h2 className="text-3xl font-bold">Chef's Recommendations</h2>
+              <h2 className="text-3xl font-bold">{t("recipes.title")}</h2>
               <p className="text-muted-foreground mt-2 max-w-2xl">
-                Our most popular and highly rated recipes from around the world
+                {t("recipes.subtitle")}
               </p>
             </div>
             
             <Button variant="ghost" className="mt-4 md:mt-0">
-              View All Recipes
+              {t("recipes.button.all")}
             </Button>
           </div>
           
@@ -118,12 +128,12 @@ const Index = () => {
             <div className="flex gap-2">
               {categories.map((category) => (
                 <Button
-                  key={category}
-                  variant={activeCategory === category ? "default" : "outline"}
+                  key={category.id}
+                  variant={activeCategory === category.id ? "default" : "outline"}
                   className="rounded-full whitespace-nowrap"
-                  onClick={() => setActiveCategory(category)}
+                  onClick={() => setActiveCategory(category.id)}
                 >
-                  {category}
+                  {category.name}
                 </Button>
               ))}
             </div>
@@ -139,16 +149,16 @@ const Index = () => {
           <div className="bg-gradient-to-r from-primary/90 to-primary rounded-2xl p-8 md:p-12 text-white relative overflow-hidden animate-scale-in">
             <div className="relative z-10">
               <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                Ready to transform your cooking experience?
+                {t("cta.title")}
               </h2>
               <p className="text-white/80 text-lg max-w-2xl mb-6">
-                Join suvAI today and discover a new world of AI-powered cooking assistance.
+                {t("cta.subtitle")}
               </p>
               <Button 
                 size="lg"
                 className="bg-white text-primary hover:bg-white/90 hover:text-primary rounded-full font-medium"
               >
-                Get Started Now
+                {t("cta.button")}
               </Button>
             </div>
           </div>
@@ -161,27 +171,27 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0">
               <ChefHat className="h-8 w-8" />
-              <span className="text-2xl font-semibold text-gradient">suvAI</span>
+              <span className="text-2xl font-semibold text-gradient">{t("app.name")}</span>
             </div>
             
             <div className="flex flex-wrap justify-center gap-6">
               <a href="#" className="text-muted-foreground hover:text-foreground transition-default">
-                About
+                {t("footer.about")}
               </a>
               <a href="#" className="text-muted-foreground hover:text-foreground transition-default">
-                Features
+                {t("footer.features")}
               </a>
               <a href="#" className="text-muted-foreground hover:text-foreground transition-default">
-                Recipes
+                {t("footer.recipes")}
               </a>
               <a href="#" className="text-muted-foreground hover:text-foreground transition-default">
-                Contact
+                {t("footer.contact")}
               </a>
               <a href="#" className="text-muted-foreground hover:text-foreground transition-default">
-                Privacy
+                {t("footer.privacy")}
               </a>
               <a href="#" className="text-muted-foreground hover:text-foreground transition-default">
-                Terms
+                {t("footer.terms")}
               </a>
             </div>
           </div>
@@ -189,7 +199,7 @@ const Index = () => {
           <Separator className="my-8" />
           
           <div className="text-center text-muted-foreground text-sm">
-            &copy; {new Date().getFullYear()} suvAI. All rights reserved.
+            &copy; {new Date().getFullYear()} {t("app.name")}. {t("footer.rights")}.
           </div>
         </div>
       </footer>

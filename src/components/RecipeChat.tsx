@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ChatMessage from "@/components/ChatMessage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Message {
   id: string;
@@ -18,18 +19,22 @@ interface RecipeChatProps {
   dietType?: string;
 }
 
-const INITIAL_MESSAGE: Message = {
-  id: uuidv4(),
-  role: "assistant",
-  content: "Hi there! Tell me what ingredients you have, and I'll suggest personalized recipes for you. You can also specify if you're looking for a particular cuisine type or dietary preference.",
-};
-
 const RecipeChat = ({ cuisineType = "all", dietType = "all" }: RecipeChatProps) => {
-  const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
+  const { t, currentLanguage } = useLanguage();
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Initialize with welcome message
+  useEffect(() => {
+    setMessages([{
+      id: uuidv4(),
+      role: "assistant",
+      content: "Hi there! Tell me what ingredients you have, and I'll suggest personalized recipes for you. You can also specify if you're looking for a particular cuisine type or dietary preference.",
+    }]);
+  }, [currentLanguage]);
 
   // Scroll to bottom of chat when messages change
   useEffect(() => {
@@ -147,7 +152,7 @@ Would you like me to suggest alternative recipes or make any modifications to th
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="List your ingredients here..."
+          placeholder={t("assistant.ingredients")}
           className="min-h-10 resize-none"
           disabled={isLoading}
         />

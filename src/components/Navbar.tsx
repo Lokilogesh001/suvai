@@ -4,11 +4,14 @@ import { Link, useLocation } from "react-router-dom";
 import { Search, Menu, X, ChefHat, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SearchBar from "./SearchBar";
+import LanguageSelector from "./LanguageSelector";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,7 +42,7 @@ const Navbar = () => {
             className="flex items-center gap-2 text-2xl font-semibold transition-opacity hover:opacity-90"
           >
             <ChefHat className="h-8 w-8" />
-            <span className="text-gradient">suvAI</span>
+            <span className="text-gradient">{t("app.name")}</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
@@ -48,25 +51,25 @@ const Navbar = () => {
                 to="/"
                 className={`${isActive("/")} transition-default font-medium`}
               >
-                Home
+                {t("nav.home")}
               </Link>
               <Link
                 to="/recipes"
                 className={`${isActive("/recipes")} transition-default font-medium`}
               >
-                Recipes
+                {t("nav.recipes")}
               </Link>
               <Link
                 to="/chatbot"
                 className={`${isActive("/chatbot")} transition-default font-medium`}
               >
-                Recipe Assistant
+                {t("nav.assistant")}
               </Link>
               <Link
                 to="/meal-planner"
                 className={`${isActive("/meal-planner")} transition-default font-medium`}
               >
-                Meal Planner
+                {t("nav.meal-planner")}
               </Link>
             </nav>
 
@@ -74,6 +77,7 @@ const Navbar = () => {
               <div className="relative">
                 <SearchBar />
               </div>
+              <LanguageSelector variant="minimal" />
               <Button 
                 variant="outline" 
                 size="icon" 
@@ -85,7 +89,7 @@ const Navbar = () => {
                 </Link>
               </Button>
               <Button variant="default" size="sm" className="font-medium">
-                Sign In
+                {t("nav.signin")}
               </Button>
             </div>
           </div>
@@ -115,40 +119,43 @@ const Navbar = () => {
                 className={`${isActive("/")} py-2 transition-default font-medium`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Home
+                {t("nav.home")}
               </Link>
               <Link
                 to="/recipes"
                 className={`${isActive("/recipes")} py-2 transition-default font-medium`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Recipes
+                {t("nav.recipes")}
               </Link>
               <Link
                 to="/chatbot"
                 className={`${isActive("/chatbot")} py-2 transition-default font-medium`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Recipe Assistant
+                {t("nav.assistant")}
               </Link>
               <Link
                 to="/meal-planner"
                 className={`${isActive("/meal-planner")} py-2 transition-default font-medium`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Meal Planner
+                {t("nav.meal-planner")}
               </Link>
               <Link
                 to="/profile"
                 className={`${isActive("/profile")} py-2 transition-default font-medium`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                My Profile
+                {t("nav.profile")}
               </Link>
             </nav>
-            <Button className="w-full" size="sm">
-              Sign In
-            </Button>
+            <div className="flex items-center justify-between">
+              <Button className="w-3/4 mr-2" size="sm">
+                {t("nav.signin")}
+              </Button>
+              <LanguageSelector variant="minimal" />
+            </div>
           </div>
         </div>
       )}
