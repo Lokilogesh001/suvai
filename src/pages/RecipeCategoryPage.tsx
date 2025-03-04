@@ -104,6 +104,94 @@ const RECIPE_DATA = [
     cuisine: "mexican",
     dietType: "non-vegetarian"
   },
+  {
+    id: "9",
+    title: "Japanese Miso Ramen",
+    description: "Rich and savory miso broth with fresh ramen noodles, soft-boiled eggs, and tender pork belly.",
+    image: "https://images.unsplash.com/photo-1557872943-16a5ac26437e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200",
+    cookTime: 45,
+    calories: 520,
+    tags: ["Japanese", "Soup", "Comfort Food"],
+    cuisine: "japanese",
+    dietType: "non-vegetarian"
+  },
+  {
+    id: "10",
+    title: "Mushroom Risotto",
+    description: "Creamy Italian risotto with mixed wild mushrooms, white wine, and freshly grated Parmesan.",
+    image: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200",
+    cookTime: 35,
+    calories: 480,
+    tags: ["Italian", "Vegetarian", "Comfort Food"],
+    cuisine: "italian",
+    dietType: "vegetarian"
+  },
+  {
+    id: "11",
+    title: "Greek Moussaka",
+    description: "Traditional layered casserole with eggplant, spiced ground lamb, and creamy béchamel sauce.",
+    image: "https://images.unsplash.com/photo-1574484284002-952d92456975?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200",
+    cookTime: 75,
+    calories: 520,
+    tags: ["Greek", "Casserole", "Comfort Food"],
+    cuisine: "mediterranean",
+    dietType: "non-vegetarian"
+  },
+  {
+    id: "12",
+    title: "Vegetable Biryani",
+    description: "Fragrant basmati rice with mixed vegetables, aromatic spices, and fried onions.",
+    image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200",
+    cookTime: 50,
+    calories: 420,
+    tags: ["Indian", "Rice", "Aromatic"],
+    cuisine: "indian",
+    dietType: "vegetarian"
+  },
+  {
+    id: "13",
+    title: "Chicken Fajitas",
+    description: "Sizzling hot strips of marinated chicken with bell peppers and onions, served with warm tortillas.",
+    image: "https://images.unsplash.com/photo-1534352956036-cd81e27dd615?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200",
+    cookTime: 25,
+    calories: 450,
+    tags: ["Mexican", "Quick", "Family Meal"],
+    cuisine: "mexican",
+    dietType: "non-vegetarian"
+  },
+  {
+    id: "14",
+    title: "Berry Açaí Bowl",
+    description: "Refreshing smoothie bowl with açaí, mixed berries, banana, and crunchy granola topping.",
+    image: "https://images.unsplash.com/photo-1590301157890-4810ed352733?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200",
+    cookTime: 10,
+    calories: 290,
+    tags: ["Breakfast", "Vegan", "Healthy"],
+    cuisine: "american",
+    dietType: "vegetarian"
+  },
+  {
+    id: "15",
+    title: "Beef Bourguignon",
+    description: "Classic French stew with tender beef, red wine, mushrooms, and pearl onions.",
+    image: "https://images.unsplash.com/photo-1608877907149-a206d75ba011?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200",
+    cookTime: 180,
+    calories: 590,
+    tags: ["French", "Stew", "Slow-cooked"],
+    cuisine: "french",
+    dietType: "non-vegetarian"
+  },
+  {
+    id: "16",
+    title: "Sushi Rolls",
+    description: "Fresh and delicate sushi rolls with premium seafood, vegetables, and seasoned rice.",
+    image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200",
+    cookTime: 60,
+    calories: 350,
+    tags: ["Japanese", "Seafood", "Elegant"],
+    cuisine: "japanese",
+    dietType: "non-vegetarian"
+  }
 ];
 
 const cuisines = [

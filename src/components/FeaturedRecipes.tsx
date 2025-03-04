@@ -49,6 +49,33 @@ const FEATURED_RECIPES = [
     calories: 320,
     tags: ["Breakfast", "Vegetarian", "Quick"],
   },
+  {
+    id: "6",
+    title: "Japanese Miso Ramen",
+    description: "Rich and savory miso broth with fresh ramen noodles, soft-boiled eggs, and tender pork belly.",
+    image: "https://images.unsplash.com/photo-1557872943-16a5ac26437e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200",
+    cookTime: 45,
+    calories: 520,
+    tags: ["Japanese", "Soup", "Comfort Food"],
+  },
+  {
+    id: "7",
+    title: "Berry Açaí Bowl",
+    description: "Refreshing smoothie bowl with açaí, mixed berries, banana, and crunchy granola topping.",
+    image: "https://images.unsplash.com/photo-1590301157890-4810ed352733?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200",
+    cookTime: 10,
+    calories: 290,
+    tags: ["Breakfast", "Vegan", "Healthy"],
+  },
+  {
+    id: "8",
+    title: "Mushroom Risotto",
+    description: "Creamy Italian risotto with mixed wild mushrooms, white wine, and freshly grated Parmesan.",
+    image: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200",
+    cookTime: 35,
+    calories: 480,
+    tags: ["Italian", "Vegetarian", "Comfort Food"],
+  },
 ];
 
 const FeaturedRecipes = () => {
