@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
@@ -76,8 +75,8 @@ const SignupPage = () => {
       });
       
       // Set the user as active
-      const completeSignUp = await setActive({ session: signUp.createdSessionId });
-      if (completeSignUp.status === "complete") {
+      if (signUp.createdSessionId) {
+        await setActive({ session: signUp.createdSessionId });
         navigate("/profile");
       }
     } catch (error) {
