@@ -75,7 +75,7 @@ const SignupPage = () => {
         description: t("signup.success.description"),
       });
       
-      // Set the user as active
+      // Set the user as active - corrected implementation
       if (signUp.createdSessionId) {
         await setActive({ session: signUp.createdSessionId });
         navigate("/profile");
