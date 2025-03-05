@@ -1,23 +1,17 @@
 
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Search, Menu, X, ChefHat, User, LogIn, LogOut } from "lucide-react";
-import { useUser, useClerk } from "@clerk/clerk-react";
+import { Link, useLocation } from "react-router-dom";
+import { Search, Menu, X, ChefHat, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SearchBar from "./SearchBar";
 import LanguageSelector from "./LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useToast } from "@/hooks/use-toast";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
   const { t } = useLanguage();
-  const { toast } = useToast();
-  const { isLoaded, isSignedIn, user } = useUser();
-  const { signOut } = useClerk();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,15 +25,6 @@ const Navbar = () => {
 
   const isActive = (path: string) => {
     return location.pathname === path ? "text-primary font-semibold" : "text-foreground/80 hover:text-foreground";
-  };
-
-  const handleSignOut = async () => {
-    await signOut();
-    toast({
-      title: "Signed out successfully",
-      description: "You have been signed out of your account."
-    });
-    navigate("/");
   };
 
   return (
@@ -93,45 +78,19 @@ const Navbar = () => {
                 <SearchBar />
               </div>
               <LanguageSelector variant="minimal" />
-              
-              {isLoaded && isSignedIn ? (
-                <div className="flex items-center gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="icon" 
-                    className="rounded-full"
-                    asChild
-                  >
-                    <Link to="/profile">
-                      {user.imageUrl ? (
-                        <img 
-                          src={user.imageUrl} 
-                          alt={user.fullName || "Profile"} 
-                          className="h-8 w-8 rounded-full"
-                        />
-                      ) : (
-                        <User className="h-5 w-5" />
-                      )}
-                    </Link>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={handleSignOut}
-                    className="font-medium"
-                  >
-                    <LogOut className="h-4 w-4 mr-2" />
-                    {t("profile.logout")}
-                  </Button>
-                </div>
-              ) : (
-                <Button variant="default" size="sm" className="font-medium" asChild>
-                  <Link to="/login">
-                    <LogIn className="h-4 w-4 mr-2" />
-                    {t("nav.signin")}
-                  </Link>
-                </Button>
-              )}
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="rounded-full"
+                asChild
+              >
+                <Link to="/profile">
+                  <User className="h-5 w-5" />
+                </Link>
+              </Button>
+              <Button variant="default" size="sm" className="font-medium">
+                {t("nav.signin")}
+              </Button>
             </div>
           </div>
 
@@ -190,35 +149,11 @@ const Navbar = () => {
               >
                 {t("nav.profile")}
               </Link>
-              
-              {isLoaded && isSignedIn ? (
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={handleSignOut}
-                  className="font-medium"
-                >
-                  <LogOut className="h-4 w-4 mr-2" />
-                  {t("profile.logout")}
-                </Button>
-              ) : (
-                <Link
-                  to="/login"
-                  className={`${isActive("/login")} py-2 transition-default font-medium`}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {t("nav.signin")}
-                </Link>
-              )}
             </nav>
             <div className="flex items-center justify-between">
-              {!isSignedIn && (
-                <Button className="w-3/4 mr-2" size="sm" asChild>
-                  <Link to="/login">
-                    {t("nav.signin")}
-                  </Link>
-                </Button>
-              )}
+              <Button className="w-3/4 mr-2" size="sm">
+                {t("nav.signin")}
+              </Button>
               <LanguageSelector variant="minimal" />
             </div>
           </div>
