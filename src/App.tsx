@@ -10,6 +10,7 @@ import RecipePage from "./pages/RecipePage";
 import ChatbotPage from "./pages/ChatbotPage";
 import RecipeCategoryPage from "./pages/RecipeCategoryPage";
 import ProfilePage from "./pages/ProfilePage";
+import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/chatbot" element={<ChatbotPage />} />
             <Route path="/recipes" element={<RecipeCategoryPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/login" element={<LoginPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

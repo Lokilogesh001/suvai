@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, Menu, X, ChefHat, User } from "lucide-react";
+import { Search, Menu, X, ChefHat, User, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SearchBar from "./SearchBar";
 import LanguageSelector from "./LanguageSelector";
@@ -88,8 +88,11 @@ const Navbar = () => {
                   <User className="h-5 w-5" />
                 </Link>
               </Button>
-              <Button variant="default" size="sm" className="font-medium">
-                {t("nav.signin")}
+              <Button variant="default" size="sm" className="font-medium" asChild>
+                <Link to="/login">
+                  <LogIn className="h-4 w-4 mr-2" />
+                  {t("nav.signin")}
+                </Link>
               </Button>
             </div>
           </div>
@@ -149,10 +152,19 @@ const Navbar = () => {
               >
                 {t("nav.profile")}
               </Link>
+              <Link
+                to="/login"
+                className={`${isActive("/login")} py-2 transition-default font-medium`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {t("nav.signin")}
+              </Link>
             </nav>
             <div className="flex items-center justify-between">
-              <Button className="w-3/4 mr-2" size="sm">
-                {t("nav.signin")}
+              <Button className="w-3/4 mr-2" size="sm" asChild>
+                <Link to="/login">
+                  {t("nav.signin")}
+                </Link>
               </Button>
               <LanguageSelector variant="minimal" />
             </div>
