@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { LogIn, Mail, Lock } from "lucide-react";
-import { useSignIn } from "@clerk/clerk-react";
+import { UserPlus, Mail, Lock, User } from "lucide-react";
+import { useSignUp } from "@clerk/clerk-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -21,63 +21,71 @@ import {
 } from "@/components/ui/form";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
-const loginSchema = z.object({
+const signupSchema = z.object({
+  firstName: z.string().min(2, {
+    message: "First name must be at least 2 characters.",
+  }),
+  lastName: z.string().min(2, {
+    message: "Last name must be at least 2 characters.",
+  }),
   email: z.string().email(),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
+  password: z.string().min(8, {
+    message: "Password must be at least 8 characters.",
   }),
 });
 
-type LoginValues = z.infer<typeof loginSchema>;
+type SignupValues = z.infer<typeof signupSchema>;
 
-const LoginPage = () => {
+const SignupPage = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { isLoaded, signIn, setActive } = useSignIn();
+  const { isLoaded, signUp, setActive } = useSignUp();
 
-  const form = useForm<LoginValues>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<SignupValues>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
     },
   });
 
-  async function onSubmit(data: LoginValues) {
+  async function onSubmit(data: SignupValues) {
     if (!isLoaded) {
       return;
     }
-    
+
     setIsLoading(true);
     
     try {
-      const result = await signIn.create({
-        identifier: data.email,
+      await signUp.create({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        emailAddress: data.email,
         password: data.password,
       });
 
-      if (result.status === "complete") {
-        await setActive({ session: result.createdSessionId });
-        
-        toast({
-          title: t("login.success.title"),
-          description: t("login.success.description"),
-        });
-        
-        // Redirect to profile page after successful login
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      
+      toast({
+        title: t("signup.success.title"),
+        description: t("signup.success.description"),
+      });
+      
+      // Set the user as active
+      const completeSignUp = await setActive({ session: signUp.createdSessionId });
+      if (completeSignUp.status === "complete") {
         navigate("/profile");
-      } else {
-        // This case occurs when additional authentication is required
-        console.log("Additional authentication required");
       }
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("Signup error:", error);
       toast({
         variant: "destructive",
-        title: t("login.error.title"),
-        description: t("login.error.description"),
+        title: t("signup.error.title"),
+        description: t("signup.error.description"),
       });
     } finally {
       setIsLoading(false);
@@ -89,15 +97,59 @@ const LoginPage = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
-            {t("login.title")}
+            {t("signup.title")}
           </CardTitle>
           <CardDescription className="text-center">
-            {t("login.subtitle")}
+            {t("signup.subtitle")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("signup.firstName")}</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input 
+                            placeholder="John" 
+                            className="pl-10" 
+                            disabled={isLoading}
+                            {...field} 
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("signup.lastName")}</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input 
+                            placeholder="Doe" 
+                            className="pl-10" 
+                            disabled={isLoading}
+                            {...field} 
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
                 name="email"
@@ -149,12 +201,12 @@ const LoginPage = () => {
                 {isLoading ? (
                   <span className="flex items-center gap-2">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                    {t("login.loading")}
+                    {t("signup.loading")}
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
-                    <LogIn className="h-4 w-4" />
-                    {t("login.button")}
+                    <UserPlus className="h-4 w-4" />
+                    {t("signup.button")}
                   </span>
                 )}
               </Button>
@@ -163,9 +215,9 @@ const LoginPage = () => {
         </CardContent>
         <CardFooter className="flex justify-center">
           <div className="text-center text-sm">
-            {t("login.no_account")}{" "}
-            <Link to="/signup" className="text-primary font-semibold hover:underline">
-              {t("login.signup_link")}
+            {t("signup.have_account")}{" "}
+            <Link to="/login" className="text-primary font-semibold hover:underline">
+              {t("signup.login_link")}
             </Link>
           </div>
         </CardFooter>
@@ -174,4 +226,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

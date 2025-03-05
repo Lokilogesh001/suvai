@@ -85,5 +85,18 @@
   "login.success.title": "Welcome back!",
   "login.success.description": "You have successfully signed in.",
   "login.error.title": "Authentication failed",
-  "login.error.description": "Please check your email and password and try again."
+  "login.error.description": "Please check your email and password and try again.",
+
+  "signup.title": "Create an Account",
+  "signup.subtitle": "Join suvAI to personalize your cooking experience",
+  "signup.firstName": "First Name",
+  "signup.lastName": "Last Name",
+  "signup.button": "Sign Up",
+  "signup.loading": "Creating account...",
+  "signup.have_account": "Already have an account?",
+  "signup.login_link": "Sign in",
+  "signup.success.title": "Account created!",
+  "signup.success.description": "Your account has been successfully created.",
+  "signup.error.title": "Registration failed",
+  "signup.error.description": "There was an error creating your account. Please try again."
 }
